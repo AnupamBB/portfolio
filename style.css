@@ -1,0 +1,489 @@
+:root {
+    --bg-color: #0d1117;
+    --term-bg: #000000;
+    --text-color: #00ff41;
+    /* Matrix Green */
+    --accent-color: #00bfff;
+    /* Cyan */
+    --error-color: #ff0055;
+    --dim-color: #444;
+    --font-stack: 'Fira Code', 'Courier New', monospace;
+    --scanline-color: rgba(0, 255, 0, 0.05);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-stack);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Scanline Effect */
+.scanline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0) 50%,
+            rgba(0, 0, 0, 0.2) 50%,
+            rgba(0, 0, 0, 0.2));
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.6;
+}
+
+.terminal-container {
+    width: 90%;
+    max-width: 1000px;
+    height: 90vh;
+    background-color: var(--term-bg);
+    border: 2px solid var(--dim-color);
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Header */
+.terminal-header {
+    background-color: #1f2428;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--dim-color);
+}
+
+.buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.red {
+    background-color: #ff5f56;
+}
+
+.yellow {
+    background-color: #ffbd2e;
+}
+
+.green {
+    background-color: #27c93f;
+}
+
+.title {
+    margin-left: 20px;
+    color: #8b949e;
+    font-size: 0.9rem;
+}
+
+/* Body */
+.terminal-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+    font-size: 1rem;
+    line-height: 1.6;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--term-bg);
+}
+
+.terminal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.terminal-body::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color);
+    border-radius: 4px;
+}
+
+/* Typography & Elements */
+h1,
+h2,
+h3,
+h4 {
+    font-weight: 600;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #fff;
+    text-shadow: 0 0 5px var(--text-color);
+}
+
+.hero-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.hero-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+}
+
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+a:hover {
+    background-color: var(--accent-color);
+    color: var(--term-bg);
+    box-shadow: 0 0 10px var(--accent-color);
+}
+
+/* Sections */
+.command-section {
+    margin-bottom: 40px;
+    opacity: 0;
+    /* For animation */
+    animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.command-line {
+    margin-bottom: 15px;
+    border-bottom: 1px dashed var(--dim-color);
+    padding-bottom: 5px;
+}
+
+.prompt {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.command {
+    color: #fff;
+}
+
+.output {
+    padding-left: 20px;
+    border-left: 2px solid var(--dim-color);
+}
+
+.text-output {
+    white-space: pre-wrap;
+}
+
+/* Cards */
+.card,
+.project-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.card:hover,
+.project-card:hover {
+    border-color: var(--accent-color);
+}
+
+.date {
+    color: #888;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.highlight {
+    color: #fff;
+    margin-top: 5px;
+}
+
+.tags {
+    color: var(--accent-color);
+    font-size: 0.85rem;
+    margin-top: 5px;
+}
+
+.grid-output {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Skills */
+.skill-category {
+    margin-bottom: 15px;
+}
+
+.category-name {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+.skill-bar {
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+}
+
+/* Tree List */
+.tree-list {
+    list-style: none;
+}
+
+.tree-marker {
+    color: var(--dim-color);
+}
+
+/* Form */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input,
+textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--dim-color);
+    color: #fff;
+    font-family: var(--font-stack);
+    padding: 5px;
+    outline: none;
+}
+
+input:focus,
+textarea:focus {
+    border-bottom-color: var(--accent-color);
+}
+
+.terminal-btn {
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 10px 20px;
+    font-family: var(--font-stack);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.terminal-btn:hover {
+    background: var(--accent-color);
+    color: var(--term-bg);
+}
+
+/* Mobile Instruction Default */
+.mobile-instruction {
+    display: none;
+}
+
+/* Interactive Line */
+.interactive-line {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    position: relative;
+}
+
+#user-input {
+    border: none;
+    width: auto;
+    flex-grow: 1;
+    margin-left: 10px;
+    caret-color: transparent;
+}
+
+.block-cursor {
+    position: absolute;
+    width: 10px;
+    height: 1.2em;
+    background-color: var(--text-color);
+    animation: blink 1s infinite;
+    pointer-events: none;
+}
+
+.cursor {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Glitch Effect (Simple) */
+.glitch {
+    position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--term-bg);
+}
+
+.glitch::before {
+    left: 2px;
+    text-shadow: -1px 0 red;
+    clip: rect(24px, 550px, 90px, 0);
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    left: -2px;
+    text-shadow: -1px 0 blue;
+    clip: rect(85px, 550px, 140px, 0);
+    animation: glitch-anim 2.5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% {
+        clip: rect(10px, 9999px, 30px, 0);
+    }
+
+    20% {
+        clip: rect(80px, 9999px, 100px, 0);
+    }
+
+    40% {
+        clip: rect(10px, 9999px, 50px, 0);
+    }
+
+    60% {
+        clip: rect(40px, 9999px, 90px, 0);
+    }
+
+    80% {
+        clip: rect(20px, 9999px, 60px, 0);
+    }
+
+    100% {
+        clip: rect(60px, 9999px, 80px, 0);
+    }
+}
+
+@keyframes glitch-anim-2 {
+    0% {
+        clip: rect(60px, 9999px, 80px, 0);
+    }
+
+    20% {
+        clip: rect(20px, 9999px, 40px, 0);
+    }
+
+    40% {
+        clip: rect(80px, 9999px, 100px, 0);
+    }
+
+    60% {
+        clip: rect(10px, 9999px, 50px, 0);
+    }
+
+    80% {
+        clip: rect(40px, 9999px, 90px, 0);
+    }
+
+    100% {
+        clip: rect(10px, 9999px, 30px, 0);
+    }
+}
+
+/* Boot Sequence Styles */
+.boot-line {
+    color: #888;
+    margin-bottom: 2px;
+    font-size: 0.9rem;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .terminal-container {
+        width: 95%;
+        height: 95vh;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .terminal-body {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .grid-output {
+        grid-template-columns: 100%;
+        width: 100%;
+    }
+
+    .command-section {
+        margin-bottom: 20px;
+    }
+
+    .interactive-line {
+        display: none;
+    }
+
+    .mobile-instruction {
+        display: block;
+        color: var(--accent-color);
+        text-align: center;
+        margin-top: 20px;
+        font-style: italic;
+        padding: 10px;
+        border: 1px dashed var(--dim-color);
+    }
+
+    #user-input {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 5px;
+    }
+}
